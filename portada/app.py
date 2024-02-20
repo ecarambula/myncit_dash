@@ -5,7 +5,7 @@ app_ui = ui.page_navbar(
     ui.nav("Página 1"),
     ui.nav("Página 2"),
     title = ui.row(
-        ui.column(3, ui.img(src = "/workspaces/myncit_dash/Data/Mincyt.png")),
+        ui.column(3, ui.img(src = "https://aluno.analisemacro.com.br/wp-content/uploads/dlm_uploads/2023/05/logo_am_45.png")),
         ui.column(9, "PFI 2023")
     )
 )
