@@ -24,7 +24,16 @@ app_ui = ui.page_navbar(
             ),
             ui.panel_main(
                 "Panel de contenido principal",
-                style = "background-color: blue;"
+                ui.row(
+                    ui.column(6, "Línea 1, Columna A", style = "background-color: red;"),
+                    ui.column(6, "Línea 1, Columna B", style = "background-color: blue;"),
+                    ),
+                ui.row(
+                     ui.column(4, "Línea 2, Columna A", style = "background-color: yellow;"),
+                     ui.column(4, "Línea 2, Columna B", style = "background-color: red;"),
+                     ui.column(4, "Línea 2, Columna C", style = "background-color: green;"),
+                     ),
+                style = "background-color: gray;"
                 )
         )
         ),
