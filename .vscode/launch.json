@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "Run Shiny app",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "shiny",
             "args": ["run", "${file}"],
