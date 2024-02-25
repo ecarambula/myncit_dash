@@ -1,27 +1,22 @@
-from shiny import ui, App
+from shiny import App, render, ui
+import pandas as pd
+
+
+# Importacion de datos
+datos = pd.read_csv(
+    filepath_or_buffer = "https://api.bcb.gov.br/dados/serie/bcdata.sgs.1/dados?formato=csv",
+    sep = ";",
+    decimal = ",",
+    converters = {"data": lambda x: pd.to_datetime(x, format = "%d/%m/%Y")}
+    )
+
 
 # Interfase de usuario ----
 app_ui = ui.page_navbar(
     ui.nav_panel(
-        "Página 1",
+        "Gráficos",
         ui.layout_sidebar(
-            ui.panel_sidebar(
-                ui.markdown(
-                    """
-                    Un texto en **negrito** o un texto en *itálico*.
-
-                    Un párrafo con un [link] (https://www.argentina.gob.ar/ciencia).
-
-                    - Item 1
-                    - Item 2
-                    - Item 3
-
-                    ![](https://analisemacro.com.br/wp-content/uploads/dlm_uploads/2021/10/logo_am.png)
-
-                    """
-                ),
-                width = 4
-            ),
+            ui.panel_sidebar("Barra lateral", width=2),
             ui.panel_main(
                 "Panel de contenido principal",
                 ui.row(
