@@ -19,15 +19,36 @@ app_ui = ui.page_navbar(
         ui.layout_sidebar(
             ui.panel_sidebar("Barra lateral", width=2),
             ui.panel_main(
-                ui.row(ui.column(12, ui.output_plot("grafico_estatico"))),
-                ui.row(ui.column(12, output_widget("grafico_interactivo")))
+                "Panel de contenido principal",
+                ui.row(
+                    ui.column(4, "Línea 1, Columna A", style = "background-color: red;"),
+                    ui.column(4, "Línea 1, Columna B", style = "background-color: blue;"),
+                    ui.column(4, "Línea 1, Columna C", style = "background-color: brown;")
+                    ),
+                ui.row(
+                     ui.column(4, "Línea 2, Columna A", style = "background-color: yellow;"),
+                     ui.column(4, "Línea 2, Columna B", style = "background-color: red;"),
+                     ui.column(4, "Línea 2, Columna C", style = "background-color: green;"),
+                     ),
+                style = "background-color: gray;"
                 )
         )
         ),
-    title = "Visualizacion de datos",
+    ui.nav_panel("Página 2"),
+    ui.nav_control(ui.a("MINCyT", href = "https://www.argentina.gob.ar/ciencia")),
+    ui.nav_menu(
+        "Más",
+        ui.nav_control(ui.a("Financiamiento", href = "https://www.argentina.gob.ar/ciencia/financiamiento")),
+        ui.nav_control(ui.a("Publicaciones", href = "https://www.argentina.gob.ar/ciencia/publicaciones-cyt"))
+        ),
+    title = ui.row(
+        ui.column(3, ui.img(src = "Mincyt.png")),
+        ui.column(9, "PFI 2023")
+    ),
     bg = "blue",
     inverse = True
 )
+
 
 
 # Servidor ---
@@ -42,6 +63,7 @@ def server(input, output, session):
     def grafico_interactivo():
         return px.line(data_frame = datos, y = "valor", x = "data")
          
-    
+ 
+
 # Dashboars shiny App
 app = App(app_ui, server)

@@ -1,16 +1,6 @@
 from shiny import App, render, ui
 import pandas as pd
 
-
-# Importacion de datos
-datos = pd.read_csv(
-    filepath_or_buffer = "https://api.bcb.gov.br/dados/serie/bcdata.sgs.1/dados?formato=csv",
-    sep = ";",
-    decimal = ",",
-    converters = {"data": lambda x: pd.to_datetime(x, format = "%d/%m/%Y")}
-    )
-
-
 # Interfase de usuario ----
 app_ui = ui.page_navbar(
     ui.nav_panel(
@@ -41,7 +31,7 @@ app_ui = ui.page_navbar(
         ui.nav_control(ui.a("Publicaciones", href = "https://www.argentina.gob.ar/ciencia/publicaciones-cyt"))
         ),
     title = ui.row(
-        ui.column(3, ui.img(src = "https://github.com/ecarambula/myncit_dash/blob/main/portada/Mincyt.png")),
+        ui.column(3, ui.img(src = "Mincyt.png")),
         ui.column(9, "PFI 2023")
     ),
     bg = "blue",
@@ -52,6 +42,7 @@ app_ui = ui.page_navbar(
 # Servidor ---
 def server(input, output, session):
     ...
-    
+
+  
 # Dashboars shiny App
 app = App(app_ui, server)
