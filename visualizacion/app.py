@@ -3,6 +3,12 @@ from shinywidgets import output_widget, render_widget
 import pandas as pd
 import plotly.express as px
 
+# Tengo que instalar:
+# pip install shinywidgets
+# pip install plotly
+
+
+
 # Importacion de datos
 datos = pd.read_csv(
     filepath_or_buffer = "https://api.bcb.gov.br/dados/serie/bcdata.sgs.1/dados?formato=csv",
@@ -21,8 +27,8 @@ app_ui = ui.page_navbar(
             ui.panel_main(
                 "Panel de contenido principal",
                 ui.row(
-                    ui.column(4, "Línea 1, Columna A", style = "background-color: red;"),
-                    ui.column(4, "Línea 1, Columna B", style = "background-color: blue;"),
+                    ui.column(4, "Línea 1, Gráfico estático", ui.output_plot("grafico_estatico"), style = "background-color: red;"),
+                    ui.column(4, "Línea 1, Gráfico interactivo", output_widget("grafico_interactivo"), style = "background-color: blue;"),
                     ui.column(4, "Línea 1, Columna C", style = "background-color: brown;")
                     ),
                 ui.row(
@@ -57,12 +63,11 @@ def server(input, output, session):
     @render.plot
     def grafico_estatico():
         return datos.plot(y = "valor", x = "data", kind  = "line")
-
+    
     @output
     @render_widget
     def grafico_interactivo():
-        return px.line(data_frame = datos, y = "valor", x = "data")
-         
+        return px.line(data_frame= datos, y = "valor", x = "data")
  
 
 # Dashboars shiny App
