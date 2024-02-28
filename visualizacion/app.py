@@ -1,12 +1,17 @@
 from shiny import App, render, ui
 from shinywidgets import output_widget, render_widget 
+from itables.shiny import DT
 import pandas as pd
 import plotly.express as px
 
-# Tengo que instalar:
-# pip install shinywidgets
-# pip install plotly
 
+# Tengo que instalar:
+    # pip install --upgrade pip wheel
+    # pip install shiny
+    # pip install shinywidgets
+    # pip install plotly
+    # pip install itables
+# y a extension de shiny para python...
 
 
 # Importacion de datos
@@ -15,7 +20,7 @@ datos = pd.read_csv(
     sep = ";",
     decimal = ",",
     converters = {"data": lambda x: pd.to_datetime(x, format = "%d/%m/%Y")}
-    ).query("data >= '2005-01-01'")
+    ).query("data >= '2005-01-01'").assign(variac_pct = lambda x: ((x.valor / x.valor.shift(1))-1)*100)
 
 
 # Interfase de usuario ----
@@ -32,8 +37,8 @@ app_ui = ui.page_navbar(
                     ui.column(4, "Línea 1, Columna C", style = "background-color: brown;")
                     ),
                 ui.row(
-                     ui.column(4, "Línea 2, Columna A", style = "background-color: yellow;"),
-                     ui.column(4, "Línea 2, Columna B", style = "background-color: red;"),
+                     ui.column(4, "Línea 2, Tábla estática", ui.output_table("tabla_estatica"), style = "background-color: yellow;"),
+                     ui.column(4, "Línea 2, Tábla interactiva", ui.HTML(DT(datos.tail(10))), style = "background-color: red;"),
                      ui.column(4, "Línea 2, Columna C", style = "background-color: green;"),
                      ),
                 style = "background-color: gray;"
@@ -65,10 +70,14 @@ def server(input, output, session):
         return datos.plot(y = "valor", x = "data", kind  = "line")
     
     @output
-    @render_widget
+    @render_widget # type: ignore
     def grafico_interactivo():
         return px.line(data_frame= datos, y = "valor", x = "data")
  
+    @output
+    @render.table
+    def tabla_estatica():
+        return datos.tail(10)
 
 # Dashboars shiny App
 app = App(app_ui, server)
