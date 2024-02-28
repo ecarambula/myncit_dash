@@ -3,6 +3,7 @@ from shinywidgets import output_widget, render_widget
 from itables.shiny import DT
 import pandas as pd
 import plotly.express as px
+import shinyswatch
 
 
 # Tengo que instalar:
@@ -11,7 +12,8 @@ import plotly.express as px
     # pip install shinywidgets
     # pip install plotly
     # pip install itables
-# y a extension de shiny para python...
+    # pip install shinyswatch
+# y la extension de shiny para python...
 
 
 # Importacion de datos
@@ -25,6 +27,7 @@ datos = pd.read_csv(
 
 # Interfase de usuario ----
 app_ui = ui.page_navbar(
+    shinyswatch.theme.cerulean(),
     ui.nav_panel(
         "Gráficos",
         ui.layout_sidebar(
