@@ -14,6 +14,7 @@
 from shiny import App, render, ui
 from shinywidgets import output_widget, render_widget 
 from itables.shiny import DT
+from plotnine.data import economics
 import pandas as pd
 import plotly.express as px
 import shinyswatch
@@ -29,13 +30,22 @@ datos = pd.read_csv(
 
 datos_mincyt = pd.read_excel("/workspaces/myncit_dash/dinamica/www/BD_PFI23.xlsx")
 
+datos_economics = economics
+
+
 # Interfase de usuario ----
 app_ui = ui.page_navbar(
     shinyswatch.theme.cerulean(),
     ui.nav_panel(
         "Gráficos",
         ui.layout_sidebar(
-            ui.panel_sidebar("Barra lateral", width=2),
+            ui.panel_sidebar(
+                ui.input.select(
+                    id = "boton_variable",
+                    label = "Seleccione una variable:",
+                    choices =
+                )
+                "Barra lateral", width=2),
             ui.panel_main(
                 "Panel de contenido principal",
                 ui.row(
@@ -60,7 +70,7 @@ app_ui = ui.page_navbar(
         ui.nav_control(ui.a("Publicaciones", href = "https://www.argentina.gob.ar/ciencia/publicaciones-cyt"))
         ),
     title = ui.row(
-        ui.column(3, ui.img(src = "Mincyt.png")),
+        ui.column(3, ui.img(src = "/workspaces/myncit_dash/dinamica/www/Mincyt.png")),
         ui.column(9, "PFI 2023")
     ),
     bg = "blue",
