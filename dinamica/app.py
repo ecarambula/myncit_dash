@@ -40,12 +40,14 @@ app_ui = ui.page_navbar(
         "Gráficos",
         ui.layout_sidebar(
             ui.panel_sidebar(
-                ui.input.select(
+                ui.input_select(
                     id = "boton_variable",
-                    label = "Seleccione una variable:",
-                    choices =
+                    label = ui.tags.strong("Seleccione una variable:",
+                    choices = datos_economics.columns.tolist()[1:len(datos_economics)],
+                    selected = datos_economics.columns.tolist()[1]
                 )
-                "Barra lateral", width=2),
+            ),
+                
             ui.panel_main(
                 "Panel de contenido principal",
                 ui.row(
@@ -76,7 +78,7 @@ app_ui = ui.page_navbar(
     bg = "blue",
     inverse = True
 )
-
+)
 
 
 # Servidor ---
