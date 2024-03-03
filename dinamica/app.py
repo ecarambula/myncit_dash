@@ -15,9 +15,12 @@ from shiny import App, render, ui
 from shinywidgets import output_widget, render_widget 
 from itables.shiny import DT
 from plotnine.data import economics
+from pathlib import Path
 import pandas as pd
 import plotly.express as px
 import shinyswatch
+
+here = Path(__file__).parent
 
 
 # Importacion de datos
@@ -72,7 +75,7 @@ app_ui = ui.page_navbar(
         ui.nav_control(ui.a("Publicaciones", href = "https://www.argentina.gob.ar/ciencia/publicaciones-cyt"))
         ),
     title = ui.row(
-        ui.column(3, ui.img(src = "/workspaces/myncit_dash/dinamica/www/Mincyt.png")),
+        ui.column(3, ui.img(src = "Mincyt.png")),
         ui.column(9, "PFI 2023")
     ),
     bg = "blue",
