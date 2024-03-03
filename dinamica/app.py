@@ -33,8 +33,10 @@ datos = pd.read_csv(
 
 datos_mincyt = pd.read_excel("/workspaces/myncit_dash/dinamica/www/BD_PFI23.xlsx")
 
-datos_economics = economics
 
+datos_economics = economics
+datos_economics.columns[1:len(datos_economics)]
+datos_economics.columns.tolist()[1:len(datos_economics)]
 
 # Interfase de usuario ----
 app_ui = ui.page_navbar(
