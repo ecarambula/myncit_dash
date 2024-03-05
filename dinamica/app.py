@@ -1,12 +1,7 @@
 # Tengo que instalar:
     # pip install --upgrade pip wheel
-    # pip install shiny
-    # pip install shinywidgets
-    # pip install plotly
-    # pip install itables
-    # pip install shinyswatch
-    # pip install plotnine                      para Apps dinamicas
-    # pip install openpyxl
+    # pip install shiny shinywidgets plotly itables shinyswatch plotnine openpyxl
+    # pip install scikit-misc
 # y la extension de shiny para python...
 
 
@@ -16,6 +11,8 @@ from shinywidgets import output_widget, render_widget
 from itables.shiny import DT
 from plotnine.data import economics
 from pathlib import Path
+
+import plotnine as p9
 import pandas as pd
 import plotly.express as px
 import shinyswatch
@@ -47,7 +44,7 @@ app_ui = ui.page_navbar(
             ui.panel_sidebar(
                 ui.input_select(
                     id = "boton_variable",
-                    label = ui.tags.strong("Seleccione una variable:",
+                    label = ui.tags.strong("Seleccione una variable:"),
                     choices = datos_economics.columns.tolist()[1:len(datos_economics)],
                     selected = datos_economics.columns.tolist()[1]
                 )
@@ -58,12 +55,12 @@ app_ui = ui.page_navbar(
                 ui.row(
                     ui.column(4, "Línea 1, Gráfico estático", ui.output_plot("grafico_estatico"), style = "background-color: red;"),
                     ui.column(4, "Línea 1, Gráfico interactivo", output_widget("grafico_interactivo"), style = "background-color: blue;"),
-                    ui.column(4, "Línea 1, Columna C", style = "background-color: brown;")
+                    ui.column(4, "Línea 1, Gráfico REACTIVO", ui.output_plot("grafico_reactivo"), style = "background-color: brown;")
                     ),
                 ui.row(
                      ui.column(4, "Línea 2, Tábla estática", ui.output_table("tabla_estatica"), style = "background-color: yellow;"),
                      ui.column(4, "Línea 2, Tábla interactiva", ui.HTML(DT(datos.tail(10))), style = "background-color: red;"),
-                     ui.column(4, "Línea 2, Columna C", style = "background-color: green;"),
+                     ui.column(4, "Línea 2, Tábla REACTIVA", ui.output_data_frame("tabla_reactiva"), style = "background-color: green;"),
                      ),
                 style = "background-color: gray;"
                 )
@@ -83,7 +80,6 @@ app_ui = ui.page_navbar(
     bg = "blue",
     inverse = True
 )
-)
 
 
 # Servidor ---
@@ -102,6 +98,28 @@ def server(input, output, session):
     @render.table
     def tabla_estatica():
         return datos.tail(10)
+    
+    @output
+    @render.plot
+    def grafico_reactivo():
+        return (
+            p9.ggplot(datos_economics) +
+            p9.aes(x = "date", y = "unemploy") +
+            p9.geom_point() +
+            p9.geom_smooth(method ="loess", se = True)
+        ) 
+
+    @output
+    @render.data_frame
+    def tabla_reactiva():
+        return (
+            datos_economics
+            .assign(date = lambda x: x.date.astype(str))
+            .filter(items = ["date", "unemploy"], axis = "columns")
+        )
+
+
+
 
 # Dashboars shiny App
 app = App(app_ui, server)
