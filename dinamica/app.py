@@ -13,6 +13,8 @@ from shinywidgets import output_widget, render_widget
 from itables.shiny import DT
 from plotnine.data import economics
 from bcb import currency
+from datetime import datetime, timedelta
+
 
 import plotnine as p9
 import pandas as pd
@@ -68,11 +70,29 @@ app_ui = ui.page_navbar(
     ui.nav_panel("Monedas",
         ui.layout_sidebar(
             ui.panel_sidebar(
+
                 ui.input_select(
                     id = "moneda",
                     label = "Moneda:",
-                    choices = currency.get_currency_list().symbol.sort_values().tolist()[2:]
-                )
+                    choices = currency.get_currency_list().symbol.sort_values().tolist()[2:],
+                    selected = "AUD"
+                ),
+
+                ui.input_date_range(
+                    id = "fechas",
+                    label = "Fecha de inicio y fin:",
+                    start = datetime.now() - timedelta(days = 365*2),
+                    end = datetime.now(),
+                    language = "es",
+                    separator = " - " 
+                ),
+
+                ui.input_radio_buttons(
+                    id = "tasa",
+                    label = "Tipo de tasa",
+                    choices = {"bid":"compra", "ask":"venta"}
+                    ),
+                width = 4    
             )
         )
     ),
