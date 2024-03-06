@@ -1,6 +1,7 @@
 # Tengo que instalar:
     # pip install --upgrade pip wheel
     # pip install shiny shinywidgets plotly itables shinyswatch plotnine openpyxl scikit-misc
+    # pip install python-bcb        banco central do Brasil
 # y la extension de shiny para python...
 
 
@@ -11,6 +12,7 @@ from shiny import App, render, ui
 from shinywidgets import output_widget, render_widget 
 from itables.shiny import DT
 from plotnine.data import economics
+from bcb import currency
 
 import plotnine as p9
 import pandas as pd
@@ -66,7 +68,25 @@ app_ui = ui.page_navbar(
                 )
         )
         ),
-    ui.nav_panel("Página 2"),
+    ui.nav_panel(
+        "Monedas",
+        ui.layout_sidebar(
+            ui.panel_sidebar(
+                ui.input_select(
+                    id = "moneda",
+                    label = "Moneda:",
+                    choices = currency.get_currency_list().symbol.sort_values().tolist()[2:]
+                )
+            ),
+            ui.panel_mail()
+     
+     ),
+
+
+
+
+
+
     ui.nav_control(ui.a("MINCyT", href = "https://www.argentina.gob.ar/ciencia")),
     ui.nav_menu(
         "Más",
