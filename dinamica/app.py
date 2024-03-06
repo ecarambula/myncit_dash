@@ -93,7 +93,8 @@ app_ui = ui.page_navbar(
                     choices = {"bid":"compra", "ask":"venta"}
                     ),
                 width = 4    
-            )
+            ),
+            ui.panel_main(ui.output_plot("grafico1"))
         )
     ),
     ui.nav_control(ui.a("MINCyT", href = "https://www.argentina.gob.ar/ciencia")),
@@ -143,6 +144,13 @@ def server(input, output, session):
             .assign(date = lambda x: x.date.astype(str))
             .filter(items = ["date", "unemploy"], axis = "columns")
         )
+
+    @output
+    @render.plot
+    def grafico1():
+        
+
+
 
 
 # Dashboars shiny App
