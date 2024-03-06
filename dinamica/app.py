@@ -1,23 +1,23 @@
 # Tengo que instalar:
     # pip install --upgrade pip wheel
-    # pip install shiny shinywidgets plotly itables shinyswatch plotnine openpyxl
-    # pip install scikit-misc
+    # pip install shiny shinywidgets plotly itables shinyswatch plotnine openpyxl scikit-misc
 # y la extension de shiny para python...
 
 
 # Importa bibliotecas
+from pathlib import Path
+
 from shiny import App, render, ui
 from shinywidgets import output_widget, render_widget 
 from itables.shiny import DT
 from plotnine.data import economics
-from pathlib import Path
 
 import plotnine as p9
 import pandas as pd
 import plotly.express as px
 import shinyswatch
 
-here = Path(__file__).parent
+# here = Path(__file__).parent
 
 
 # Importacion de datos
@@ -119,7 +119,6 @@ def server(input, output, session):
         )
 
 
-
-
 # Dashboars shiny App
-app = App(app_ui, server)
+www_dir = Path(__file__).parent / "www"
+app = App(app_ui, server, static_assets=www_dir)
