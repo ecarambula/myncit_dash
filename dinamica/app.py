@@ -40,36 +40,32 @@ datos_economics.columns.tolist()[1:len(datos_economics)]
 # Interfase de usuario ----
 app_ui = ui.page_navbar(
     shinyswatch.theme.cerulean(),
-    ui.nav_panel(
-        "Gráficos",
+    ui.nav_panel("Gráficos",
         ui.layout_sidebar(
             ui.panel_sidebar(
                 ui.input_select(
-                    id = "boton_variable",
-                    label = ui.tags.strong("Seleccione una variable:"),
-                    choices = datos_economics.columns.tolist()[1:len(datos_economics)],
-                    selected = datos_economics.columns.tolist()[1]
-                )
+                id = "boton_variable",
+                label = ui.tags.strong("Seleccione una variable:"),
+                choices = datos_economics.columns.tolist()[1:len(datos_economics)],
+                selected = datos_economics.columns.tolist()[1]
+                ),
             ),
-                
-            ui.panel_main(
-                "Panel de contenido principal",
+            ui.panel_main("Panel de contenido principal",
                 ui.row(
                     ui.column(4, "Línea 1, Gráfico estático", ui.output_plot("grafico_estatico"), style = "background-color: red;"),
                     ui.column(4, "Línea 1, Gráfico interactivo", output_widget("grafico_interactivo"), style = "background-color: blue;"),
                     ui.column(4, "Línea 1, Gráfico REACTIVO", ui.output_plot("grafico_reactivo"), style = "background-color: brown;")
-                    ),
+                ),
                 ui.row(
                      ui.column(4, "Línea 2, Tábla estática", ui.output_table("tabla_estatica"), style = "background-color: yellow;"),
                      ui.column(4, "Línea 2, Tábla interactiva", ui.HTML(DT(datos.tail(10))), style = "background-color: red;"),
-                     ui.column(4, "Línea 2, Tábla REACTIVA", ui.output_data_frame("tabla_reactiva"), style = "background-color: green;"),
-                     ),
+                     ui.column(4, "Línea 2, Tábla REACTIVA", ui.output_data_frame("tabla_reactiva"), style = "background-color: green;")
+                ),
                 style = "background-color: gray;"
-                )
+            )
         )
-        ),
-    ui.nav_panel(
-        "Monedas",
+    ),
+    ui.nav_panel("Monedas",
         ui.layout_sidebar(
             ui.panel_sidebar(
                 ui.input_select(
@@ -77,29 +73,19 @@ app_ui = ui.page_navbar(
                     label = "Moneda:",
                     choices = currency.get_currency_list().symbol.sort_values().tolist()[2:]
                 )
-            ),
-            ui.panel_mail()
-     
-     ),
-
-
-
-
-
-
+            )
+        )
+    ),
     ui.nav_control(ui.a("MINCyT", href = "https://www.argentina.gob.ar/ciencia")),
-    ui.nav_menu(
-        "Más",
+    ui.nav_menu("Más",
         ui.nav_control(ui.a("Financiamiento", href = "https://www.argentina.gob.ar/ciencia/financiamiento")),
         ui.nav_control(ui.a("Publicaciones", href = "https://www.argentina.gob.ar/ciencia/publicaciones-cyt"))
-        ),
-    title = ui.row(
-        ui.column(3, ui.img(src = "Mincyt.png")),
-        ui.column(9, "PFI 2023")
     ),
-    bg = "blue",
+    title = ui.row(ui.column(3, ui.img(src = "Mincyt.png")), ui.column(9, "PFI 2023")), 
+    bg = "blue", 
     inverse = True
 )
+
 
 
 # Servidor ---
