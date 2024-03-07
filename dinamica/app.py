@@ -21,8 +21,6 @@ import pandas as pd
 import plotly.express as px
 import shinyswatch
 
-# here = Path(__file__).parent
-
 
 # Importacion de datos
 datos = pd.read_csv(
@@ -33,7 +31,6 @@ datos = pd.read_csv(
     ).query("data >= '2005-01-01'").assign(variac_pct = lambda x: ((x.valor / x.valor.shift(1))-1)*100)
 
 datos_mincyt = pd.read_excel("/workspaces/myncit_dash/dinamica/www/BD_PFI23.xlsx")
-
 
 datos_economics = economics
 datos_economics.columns[1:len(datos_economics)]
@@ -148,11 +145,27 @@ def server(input, output, session):
     @output
     @render.plot
     def grafico1():
+        datos1 = currency.get(
+            symbols = input.moneda(),
+            start = input.fechas()[0],
+            end = input.fechas()[1],
+            side = "both",
+            )
+        datos1.columns = datos1.columns.droplevel()
+        datos1["data"] = pd.to_datetime(datos1.index, utc = True)
+
+        return (
+            p9.ggplot(datos1) +
+            p9.aes(x = "data", y = input.tasa()) +
+            p9.geom_line(size = 1) +
+            p9.labs(
+                title = "Tasa de cambio",
+                caption = "Datos: BCB | Elaboração: Análise Macro"
+                ) +
+            p9.ylab(input.moneda() + " / BRL") +
+            p9.xlab("")
+        )
         
-
-
-
-
 # Dashboars shiny App
 www_dir = Path(__file__).parent / "www"
-app = App(app_ui, server, static_assets=www_dir)
+app = App(app_ui, server, static_assets = www_dir)
