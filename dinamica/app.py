@@ -8,7 +8,7 @@
 # Importa bibliotecas
 from pathlib import Path
 
-from shiny import App, render, ui
+from shiny import App, render, ui, reactive
 from shinywidgets import output_widget, render_widget 
 from itables.shiny import DT
 from plotnine.data import economics
@@ -142,9 +142,8 @@ def server(input, output, session):
             .filter(items = ["date", "unemploy"], axis = "columns")
         )
 
-    @output
-    @render.plot
-    def grafico1():
+    @reactive.calc
+    def colecta_datos():
         datos1 = currency.get(
             symbols = input.moneda(),
             start = input.fechas()[0],
@@ -153,9 +152,13 @@ def server(input, output, session):
             )
         datos1.columns = datos1.columns.droplevel()
         datos1["data"] = pd.to_datetime(datos1.index, utc = True)
-
+        return datos1
+    
+    @output
+    @render.plot
+    def grafico1():
         return (
-            p9.ggplot(datos1) +
+            p9.ggplot(colecta_datos) +
             p9.aes(x = "data", y = input.tasa()) +
             p9.geom_line(size = 1) +
             p9.labs(
