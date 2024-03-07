@@ -142,7 +142,7 @@ def server(input, output, session):
             .filter(items = ["date", "unemploy"], axis = "columns")
         )
 
-    @reactive.calc
+    @reactive.Calc
     def colecta_datos():
         datos1 = currency.get(
             symbols = input.moneda(),
